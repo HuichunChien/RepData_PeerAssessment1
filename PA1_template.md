@@ -205,3 +205,23 @@ median(tapply(data.filled$steps, data.filled$date, sum, na.rm = TRUE))
 
 Conclusion : The dataset with filled in value on missing values actually increase both the mean and median valuse retrieved in the first part of assignment.
 
+###Are there differences in activity patterns between weekdays and weekends?
+1. For this part the weekdays() function may be of some help here. Use the dataset with the filled-in missing values for this part.
+2. Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
+3. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). See the README file in the GitHub repository to see an example of what this plot should look like using simulated data.
+
+* split data with filled in missing value into weekday and weekend catelogies
+
+```r
+data.filled$day <- as.factor(ifelse(weekdays(as.Date(data.filled$date),  abbreviate = TRUE)==c("Sat","Sun"), "weekend", "weekday"))
+```
+
+* plot panel plot 
+
+```r
+library(lattice)
+xyplot(steps ~ interval | day, data = aggregate(steps ~ interval + day, data.filled, FUN = mean),
+       layout = c(1,2), type = "l", group=day, ylab = "Averaged Steps", xlab = "Interval")
+```
+
+![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-1.png) 
